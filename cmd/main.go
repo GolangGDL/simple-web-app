@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/simple-web-app/pkg/routes"
+	"github.com/GolangGdl/simple-web-app/pkg/routes"
 )
 
 func main() {
