@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <head>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="js/app.js"></script> 
+      </head> 
+<h1>Workshop Fundamentos</h1>
+
+<div ng-app="bankApp">
+    <div align="center" ng-controller="bankCtrl">
+   <table border="1">
+      <tr ng-repeat="user in users | orderBy: balance ">
+        <td class="name"><label></label></td>
+        <td class="balance"><label></label></td>
+        <td><a href="#" ng-click="remove(user)">Delete</a></td>
+        <td><a href="#" ng-click="edit(user)">Edit</a></td>
+      </tr>
+  </table>
+      <hr>
+      <ul>
+      <li>
+        Name:<input type="text" id="name" ng-model="current.name" value="" /> 
+        <br>
+        Balance: <input type="text" id="balance" ng-model="current.balance" value="" /> 
+        <br>
+      </li>
+      <li>
+        <button ng-click="save(current) "> Save</button>
+        <button ng-click="addNew(current) "> Add New User</button>
+      </li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>
