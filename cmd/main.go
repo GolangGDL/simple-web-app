@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/workshopgo/pkg/routes"
+	"github.com/simple-web-app/pkg/routes"
 )
 
 func main() {
