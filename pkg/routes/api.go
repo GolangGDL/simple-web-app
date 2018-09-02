@@ -1,34 +1,32 @@
 package routes
 
-import "net/http"
+import (
+	"net/http"
+)
+
+type Item struct {
+	Name     string `json:"name"`
+	Quantity int    `json:"quantity"`
+	Price    int    `json:"price"`
+}
+
+type EditItem struct {
+	Name     string `json:"name"`
+	Quantity int    `json:"quantity"`
+	Price    int    `json:"price"`
+	Query    string `json:"query"`
+}
+
+type ItemListPrice struct {
+	Items []Item `json:"item"`
+	Total int    `json:"total"`
+}
+
+var itemsBunch ItemListPrice
 
 func Api(mux *http.ServeMux) *http.ServeMux {
 	mux.HandleFunc("/edit", edit)
-	mux.HandleFunc("/add", edit)
-	mux.HandleFunc("/delete", edit)
+	mux.HandleFunc("/add", add)
+	mux.HandleFunc("/delete", delete)
 	return mux
-}
-
-func edit(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-
-	// ..
-
-	w.WriteHeader(http.StatusOK)
-}
-
-func delete(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-
-	// ..
-
-	w.WriteHeader(http.StatusOK)
-}
-
-func add(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-
-	// ..
-
-	w.WriteHeader(http.StatusOK)
 }

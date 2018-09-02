@@ -1,38 +1,130 @@
-<!DOCTYPE html>
-<html>
-<body>
-    <head>
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="js/app.js"></script> 
-      </head> 
-<h1>Workshop Fundamentos</h1>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
+<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+<script src="./js/app.js"></script>
 
-<div ng-app="bankApp">
-    <div align="center" ng-controller="bankCtrl">
-   <table border="1">
-      <tr ng-repeat="user in users | orderBy: balance ">
-        <td class="name"><label></label></td>
-        <td class="balance"><label></label></td>
-        <td><a href="#" ng-click="remove(user)">Delete</a></td>
-        <td><a href="#" ng-click="edit(user)">Edit</a></td>
-      </tr>
-  </table>
-      <hr>
-      <ul>
-      <li>
-        Name:<input type="text" id="name" ng-model="current.name" value="" /> 
-        <br>
-        Balance: <input type="text" id="balance" ng-model="current.balance" value="" /> 
-        <br>
-      </li>
-      <li>
-        <button ng-click="save(current) "> Save</button>
-        <button ng-click="addNew(current) "> Add New User</button>
-      </li>
-      </ul>
+
+<!------ Table list ---------->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Item list</h4>
+      <div class="table-responsive">
+        <table id="mytable" class="table table-bordred table-striped">
+          <thead>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td>
+                <p data-placement="top" data-toggle="tooltip" title="Add"><button class="btn btn-secondary btn-xs" data-title="Add"
+                  data-toggle="modal" data-target="#add"><span class="glyphicon glyphicon-plus"></span></button></p>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="clearfix"></div>
+      </div>
     </div>
   </div>
+</div>
 
-</body>
-</html>
+<!------ Total ---------->
+<div class="container">
+  <div class="row">
+    <p id="total">Total:0</p>
+  </div>
+</div>
+
+
+<!------ Modal add ---------->
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove"
+              aria-hidden="true"></span></button>
+          <h4 class="modal-title custom_align" id="Heading">Add Item</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <input id="addName" class="form-control " type="text" placeholder="item">
+          </div>
+          <div class="form-group">
+  
+            <input id="addQuantity" class="form-control " type="text" placeholder="quantity">
+          </div>
+          <div class="form-group">
+            <input id="addPrice" class="form-control" type="text" placeholder="price">
+          </div>
+        </div>
+        <div class="modal-footer ">
+          <button type="button" onclick="add(document.getElementById('addName').value,document.getElementById('addQuantity').value,document.getElementById('addPrice').value)" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Create</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+
+
+<!------ Modal edit ---------->
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove"
+            aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Edit Item</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input id="editName" class="form-control " type="text" placeholder="item">
+        </div>
+        <div class="form-group">
+
+          <input id="editQuantity" class="form-control " type="text" placeholder="quantity">
+        </div>
+        <div class="form-group">
+          <input id="editPrice" class="form-control" placeholder="price">
+        </div>
+      </div>
+      <div class="modal-footer ">
+        <button type="button" onclick="edit(document.getElementById('editName').value,document.getElementById('editQuantity').value,document.getElementById('editPrice').value)" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!------ Modal delete ---------->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove"
+            aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete
+          this Record?</div>
+      </div>
+      <div class="modal-footer ">
+        <button type="button" onclick="deleteItem()" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

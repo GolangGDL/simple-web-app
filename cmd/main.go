@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -10,13 +12,16 @@ import (
 func main() {
 	mux := routes.Init()
 
-	server := http.Server{
-		Addr:           ":8080",
+	srv := http.Server{
+		Addr:           ":8081",
 		Handler:        mux,
 		ReadTimeout:    5 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 8175,
 	}
-
-	server.ListenAndServe()
+	fmt.Println("Listen on port " + srv.Addr)
+	err := srv.ListenAndServe()
+	if err != nil {
+		log.Println(err)
+	}
 }
