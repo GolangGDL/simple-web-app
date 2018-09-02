@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -71,8 +70,21 @@ func delete(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Println("error:", err)
 		}
-		fmt.Println("delete: " + element.Query)
-
+		var indexDelete int
+		for i, item := range itemsBunch.Items {
+			if item.Name == element.Query {
+				indexDelete = i
+			}
+		}
+		var emptyItem Item
+		copy(itemsBunch.Items[indexDelete:], itemsBunch.Items[indexDelete+1:])
+		itemsBunch.Items[len(itemsBunch.Items)-1] = emptyItem
+		itemsBunch.Items = itemsBunch.Items[:len(itemsBunch.Items)-1]
+		itemsBunch.Total = 0
+		for index := range itemsBunch.Items {
+			totalProduct := productTotalPrice(itemsBunch.Items[index].Price, itemsBunch.Items[index].Quantity)
+			itemsBunch.Total = newTotal(itemsBunch.Total, totalProduct)
+		}
 		if err := json.NewEncoder(w).Encode(itemsBunch); err != nil {
 			panic(err)
 		}
