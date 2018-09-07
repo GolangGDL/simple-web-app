@@ -13,7 +13,7 @@ func main() {
 	mux := routes.Init()
 
 	srv := http.Server{
-		Addr:           ":8081",
+		Addr:           ":8080",
 		Handler:        mux,
 		ReadTimeout:    5 * time.Second,
 		WriteTimeout:   10 * time.Second,

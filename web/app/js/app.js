@@ -9,7 +9,7 @@ function fetch() {
 
 function add(name, price, quantity) {
   axios.post('/add', {
-    query: queryName,
+    id: queryName,
     name: name,
     quantity: parseInt(price),
     price: parseInt(quantity)
@@ -34,7 +34,7 @@ function edit(name, price, quantity) {
     name: name,
     quantity: parseInt(price),
     price: parseInt(quantity),
-    query: queryName
+    id: queryName
   })
     .then(function (response) {
       data = response.data
@@ -53,7 +53,7 @@ function edit(name, price, quantity) {
 
 function deleteItem() {
   axios.post('/delete', {
-    query: queryName
+    id: queryName
   })
     .then(function (response) {
       data = response.data

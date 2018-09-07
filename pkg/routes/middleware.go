@@ -7,6 +7,20 @@ import (
 	"net/http"
 )
 
+type Item struct {
+	Name     string `json:"name"`
+	Quantity int    `json:"quantity"`
+	Price    int    `json:"price"`
+	Id       string `json:"id"`
+}
+
+type ItemListPrice struct {
+	Items []Item `json:"item"`
+	Total int    `json:"total"`
+}
+
+var itemsBunch ItemListPrice
+
 func add(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
@@ -35,14 +49,14 @@ func edit(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		w.WriteHeader(http.StatusOK)
 		bodyBytes, _ := ioutil.ReadAll(r.Body)
-		var elementEdit EditItem
+		var elementEdit Item
 		err := json.Unmarshal(bodyBytes, &elementEdit)
 		if err != nil {
 			log.Println("error:", err)
 		}
 		itemsBunch.Total = 0
 		for index, element := range itemsBunch.Items {
-			if element.Name == elementEdit.Query {
+			if element.Name == elementEdit.Id {
 				itemsBunch.Items[index].Name = elementEdit.Name
 				itemsBunch.Items[index].Price = elementEdit.Price
 				itemsBunch.Items[index].Quantity = elementEdit.Quantity
@@ -50,7 +64,7 @@ func edit(w http.ResponseWriter, r *http.Request) {
 			totalProduct := productTotalPrice(itemsBunch.Items[index].Price, itemsBunch.Items[index].Quantity)
 			itemsBunch.Total = newTotal(itemsBunch.Total, totalProduct)
 		}
-		elementEdit.Query = ""
+		elementEdit.Id = ""
 		if err := json.NewEncoder(w).Encode(itemsBunch); err != nil {
 			panic(err)
 		}
@@ -65,14 +79,14 @@ func delete(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		w.WriteHeader(http.StatusOK)
 		bodyBytes, _ := ioutil.ReadAll(r.Body)
-		var element EditItem
+		var element Item
 		err := json.Unmarshal(bodyBytes, &element)
 		if err != nil {
 			log.Println("error:", err)
 		}
 		var indexDelete int
 		for i, item := range itemsBunch.Items {
-			if item.Name == element.Query {
+			if item.Name == element.Id {
 				indexDelete = i
 			}
 		}
