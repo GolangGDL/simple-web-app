@@ -7,9 +7,13 @@ function fetch() {
 
 }
 
+function addID() {
+  return Math.random();
+}
+
 function add(name, price, quantity) {
   axios.post('/add', {
-    id: queryName,
+    id: addID(),
     name: name,
     quantity: parseInt(price),
     price: parseInt(quantity)
@@ -210,7 +214,7 @@ function paragraphAdd() {
 }
 
 function setQuery(id) {
- var name =  id.split("-"); 
+ var name =  id.split("-");
   queryName = name[0]
 }
 
@@ -222,9 +226,9 @@ function setValueModal(id){
   var nameRef = name+"-name"
   var quantRef = quantity+"-quantity"
   var priceRef = price+"-price"
-  var nameItem = document.getElementById(nameRef).textContent; 
-  var quantityItem = document.getElementById(quantRef).textContent; 
-  var priceItem = document.getElementById(priceRef).textContent; 
+  var nameItem = document.getElementById(nameRef).textContent;
+  var quantityItem = document.getElementById(quantRef).textContent;
+  var priceItem = document.getElementById(priceRef).textContent;
   $('#editName').val(nameItem);
   $('#editQuantity').val(quantityItem);
   $('#editPrice').val(priceItem);
